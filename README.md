@@ -1,61 +1,74 @@
-# 🚀 Takım İsmi: [Takım Adınızı Yazın]
+# Takım İsmi
 
-## 📌 Ürün İsmi: [Projenizin Adı]
+Takım X
 
-**Ürün Açıklaması:** 
-[Projenizin ne işe yaradığını buraya 1-2 cümleyle yazın.]
+# Ürün İle İlgili Bilgiler
+
+## Takım Elemanları
+
+* John Doe: Product Owner
+* Jane Doe: Scrum Master
+* Atıl Samancıoğlu: Team Member/Developer
+
+## Ürün İsmi
+
+--Movie App--
+
+## Ürün Açıklaması
+
+* Movie App uygulamamız ile insanların izlemek istediği filmlere ve dizilere daha kolay karar vermesini sağlayacağız. İçerisinde binlerce filmi barındıran uygulamamız aynı zamanda Netflix, Prime vb. platformlarda yayınlanıp yayınlanmadığını ve IMDB puanlarını da gösterecek.
+
+## Ürün Özellikleri
+
+* Filmleri türüne göre ayırma
+* Filmlerin yönetmen, aktör, aktris vb. bilgilerini posteriyle birlikte gösterme
+* IMDB ve Rotten Tomatoes puanlarını gösterme
+* Netflix'te ve Prime'da bulunurluğunu gösterme
+
+## Hedef Kitle
+
+* Netflix kullanıcıları
+* Prime kullanıcıları
+* Sinema severler
+* Dizi severler
+* 15 - 65 yaş arası kullanıcılar
+
+## Product Backlog URL
+
+[Miro Backlog Board](#)
 
 ---
 
-### 👥 Ekip ve Roller
 <details>
-  <summary><b>Takım Üyelerini Görmek İçin Tıklayın</b></summary>
-  
-  * **Scrum Master:** [Adınız]
-  * **Product Owner:** [Takım Arkadaşınız]
-  * **Developer:** [Diğer Takım Arkadaşınız]
-  * **Developer:** [Diğer Takım Arkadaşınız]
-  * **Developer:** [Diğer Takım Arkadaşınız]
+  <summary><h2>Sprint 1</h2></summary>
+
+  * **Backlog düzeni ve Story seçimleri**: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur.
+
+    Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.
+
+  * **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Slack üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır: [Sprint 1 Daily Scrum Chats](#)
+
+  * **Sprint board update**: Sprint board screenshotları:
+    ![Sprint Board 1](gorsel-linki-buraya)
+    ![Sprint Board 2](gorsel-linki-buraya)
+
+  * **Ürün Durumu**: Ekran görüntüleri:
+    ![Ürün Durumu](gorsel-linki-buraya)
+
+  * **Sprint Review**: Alınan kararlar: Veritabanı oluşturması email ile toplanacak veriler için gerekli görülmüştür. Fakat bir yandan da veritabanı form sayfası için gerekli olmamıştır. O sebeple PBI bir sonraki sprint'e aktarılmıştır. Çıkan ürünün çalışmasında ve testlerinde bir problem görülmemiştir. Ekstra koyulması gereken özellikler belirlenmiştir. Sprint Review katılımcıları: ......
+
+  * **Sprint Retrospective**:
+    * Takım içindeki görev dağılımıyla ilgili düzenleme yapılması kararı alınmıştır
+    * Tahmin puanları gözden geçirilmeli ve sprint planlama toplantılarında gerekli geri bildirimlerin developer'lar tarafından verildiğine emin olunmalı
+    * Unit test'ler için ayrılan efor/saat arttırılmalı
+
 </details>
 
 ---
 
-### 🎯 Proje Detayları
 <details>
-  <summary><b>Hedef Kitle ve Ürün Özellikleri</b></summary>
+  <summary><h2>Sprint 2</h2></summary>
   
-  **Hedef Kitle:**
-  * Yeni mezunlar
-  * İnsan Kaynakları Uzmanları
-  * [Diğer hedef kitleniz]
-
-  **Temel Özellikler:**
-  * Özellik 1
-  * Özellik 2
-</details>
-
----
-
-## Sprint 1 
-
-<details>
-  <summary><b>Sprint 1 Özeti ve Kanıtlar</b></summary>
-  
-  **Backlog Düzeni ve Story Seçimleri:**
-  Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde seçimler yapılmıştır.
-
-  **Sprint Board (Miro/GitHub Projects) Linki:** [Board Linkini Buraya Ekleyin]
-
-  **Daily Scrum Notları:**
-  Daily Scrum toplantılarımızın zamansal sebeplerden ötürü Slack üzerinden yapılmasına karar verilmiştir.
-  ![Sprint 1 Slack Görüntüsü](buraya-gorsel-linki-gelecek.jpg)
-
-  **Sprint Board Ekran Görüntüleri:**
-  ![Sprint 1 Board Görüntüsü](buraya-board-gorsel-linki-gelecek.jpg)
+  [Sprint 2 notları buraya eklenecek...]
   
 </details>
-
-## Sprint 2
-
-## Sprint 3
-
