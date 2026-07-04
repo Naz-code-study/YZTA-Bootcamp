@@ -46,20 +46,19 @@ MoodTaste AI (Zevk DNA)
 
   * **Backlog düzeni ve Story seçimleri:** Bu sprint ağırlıklı olarak proje yönetimi, projenin çapının (scope) belirlenmesi ve fikirler üzerinde uzlaşma süreçlerine ayrılmıştır. Bu nedenle Product Backlog'umuz, doğrudan teknik geliştirmelerden ziyade analiz, teknoloji seçimi ve mimari planlama story'lerine göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde, kullanılacak teknolojilerin araştırılması ve ürün sınırlarının çizilmesi task'leri puanlanmış, kapasiteye uygun seçimler yapılmıştır.
 
-  * **Daily Scrum:** Daily Scrum toplantılarımızın zamansal sebeplerden ötürü Slack ve WhatsApp üzerinden asenkron olarak yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği ekran görüntüsü olarak Readme'de tarafımızdan paylaşılmaktadır: 
+  * **Daily Scrum:** Daily Scrum toplantılarımızın ve genel proje süreçlerimizin WhatsApp üzerinden düzenli iletişim kurularak ve Google Meet üzerinden online toplantılar yapılarak yürütülmesine karar verilmiştir. Daily Scrum toplantısı örneği ekran görüntüsü olarak Readme'de tarafımızdan paylaşılmaktadır: 
     [Sprint 1 Daily Scrum Sohbet Kanıtları](sprint1-scrum-gorsel-linki)
 
   * **Sprint board update:** Sprint board screenshotları:
-    ![Sprint 1 Board Görüntüsü 1](gorsel-linki-buraya)
-    ![Sprint 1 Board Görüntüsü 2](gorsel-linki-buraya)
+    ![Sprint 1 Board Görüntüsü 1] <img width="967" height="836" alt="Ekran görüntüsü 2026-07-04 173623" src="https://github.com/user-attachments/assets/56217bc4-1d51-48db-9d06-2fea41546545" />
+    ![Sprint 1 Board Görüntüsü 2] <img width="963" height="925" alt="Ekran görüntüsü 2026-07-04 174002" src="https://github.com/user-attachments/assets/f77c0da0-d526-410d-a6cf-d2fb32e3d89c" />
 
-  * **Ürün Durumu:** Bu sprintte henüz aktif kodlama aşamasına geçilmemiş olup, ürünün genel mimarisi, hedef kitlesi ve teknoloji yığını (tech stack) tasarlanmıştır. *(Buraya Figma taslakları veya teknik mimari şema görseli eklenecektir)*:
-    ![Ürün Durumu / Taslak Çizimler](gorsel-linki-buraya)
+  * **Ürün Durumu:** Bu sprintte henüz aktif kodlama aşamasına geçilmemiş olup, ürünün genel mimarisi, hedef kitlesi ve teknoloji yığını (tech stack) tasarlanmıştır.
 
   * **Sprint Review:** 
     * **Alınan Kararlar:** Takım içi değerlendirmeler sonucunda projenin hedeflenen kullanıcı deneyimini en iyi şekilde sunabilmesi için bir web projesi yerine **mobil uygulama** olarak geliştirilmesine kesin karar verilmiştir.
     * Mobil uygulamanın arayüzü ve arka planda çalışacak yapay zeka/öneri motoru için kullanılacak teknolojiler (kullanılacak kütüphaneler, veritabanı mimarisi) üzerine mutabakata varılmıştır. 
-    * Sprint Review Katılımcıları: [Tüm Takım Üyelerinin İsimleri]
+    * Sprint Review Katılımcıları: Dilay Bayrak, Vedat Ayaz, Naz Erdoğdu, Ayşe Feyza Kadersiz, Yahya Mert İmal
 
   * **Sprint Retrospective:**
     * Fikir bulma, uygulamanın çapını belirleme ve uzlaşma sürecinin planlanandan biraz daha uzun sürmesi nedeniyle, sonraki sprintlerde kodlama ve teknik geliştirme süreçlerine daha fazla ivme kazandırılması kararı alınmıştır.
