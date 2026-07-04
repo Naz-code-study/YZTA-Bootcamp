@@ -47,7 +47,7 @@ MoodTaste AI (Zevk DNA)
   * **Backlog düzeni ve Story seçimleri:** Bu sprint ağırlıklı olarak proje yönetimi, projenin çapının (scope) belirlenmesi ve fikirler üzerinde uzlaşma süreçlerine ayrılmıştır. Bu nedenle Product Backlog'umuz, doğrudan teknik geliştirmelerden ziyade analiz, teknoloji seçimi ve mimari planlama story'lerine göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde, kullanılacak teknolojilerin araştırılması ve ürün sınırlarının çizilmesi task'leri puanlanmış, kapasiteye uygun seçimler yapılmıştır.
 
   * **Daily Scrum:** Daily Scrum toplantılarımızın ve genel proje süreçlerimizin WhatsApp üzerinden düzenli iletişim kurularak ve Google Meet üzerinden online toplantılar yapılarak yürütülmesine karar verilmiştir. Daily Scrum toplantısı örneği ekran görüntüsü olarak Readme'de tarafımızdan paylaşılmaktadır: 
-    [Sprint 1 Daily Scrum Sohbet Kanıtları](https://docs.google.com/document/d/1_ShbzVQutKk-ZqqKMS6ubeXNJhv-akFi/edit?usp=sharing&ouid=103046258349654356650&rtpof=true&sd=true)
+    [Sprint 1 Daily Scrum Sohbet Kanıtları](https://docs.google.com/document/d/1Jaj8YmphBXVd0JHIo-K1nHgAs3c4NuTV/edit?usp=sharing&ouid=103046258349654356650&rtpof=true&sd=true)
 
   * **Sprint board update:** Sprint board screenshotları:
     ![Sprint 1 Board Görüntüsü 1] <img width="967" height="836" alt="Ekran görüntüsü 2026-07-04 173623" src="https://github.com/user-attachments/assets/56217bc4-1d51-48db-9d06-2fea41546545" />
