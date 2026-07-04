@@ -6,11 +6,11 @@ Takım 67
 
 ## Takım Elemanları
 
-* **[İsim Soyisim]:** Product Owner
-* **[İsim Soyisim]:** Scrum Master
-* **[İsim Soyisim]:** Team Member / Developer
-* **[İsim Soyisim]:** Team Member / Developer
-* **[İsim Soyisim]:** Team Member / Developer
+* **Dilay Bayrak:** Scrum Master
+* **Naz Erdoğdu:** Product Owner
+* **Vedat Ayaz:** Team Member / Developer
+* **Ayşe Feyza Kedersiz:** Team Member / Developer
+* **Yahya Mert İmal:** Team Member / Developer
 
 ## Ürün İsmi
 
@@ -38,7 +38,7 @@ MoodTaste AI (Zevk DNA)
 
 ## Product Backlog URL
 
-[Miro / GitHub Projects Backlog Board Linki](#)
+[Jira Projects Backlog Board Linki](https://dilaybayrak04.atlassian.net/jira/software/projects/SCRUM/boards/1?isInsightsOpen=true)
 
 ---
 <details>
