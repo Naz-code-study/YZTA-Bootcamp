@@ -71,7 +71,24 @@ MoodTaste AI (Zevk DNA)
 <details>
   <summary><h2>Sprint 2</h2></summary>
   
-  *(Sprint 2 bittiğinde detaylar buraya eklenecektir...)*
+  * **Backlog düzeni ve Story seçimleri:** lorem ipsum
+
+  * **Daily Scrum:** Daily Scrum toplantılarımızın ve genel proje süreçlerimizin WhatsApp üzerinden düzenli iletişim kurularak ve Google Meet üzerinden online toplantılar yapılarak yürütülmesine karar verilmiştir. Daily Scrum toplantısı örneği ekran görüntüsü olarak Readme'de tarafımızdan paylaşılmaktadır: 
+    [Sprint 2 Daily Scrum Sohbet Kanıtları]()
+
+  * **Sprint board update:** Sprint board screenshotları:
+    ![Sprint 2 Board Görüntüsü 1] 
+    ![Sprint 2 Board Görüntüsü 2] 
+
+  * **Ürün Durumu:** lorem ipsum.
+
+  * **Sprint Review:** 
+    * **Alınan Kararlar:** lorem ipsum 
+    * Sprint Review Katılımcıları: Dilay Bayrak, Vedat Ayaz, Naz Erdoğdu, Ayşe Feyza Kadersiz, Yahya Mert İmal
+
+  * **Sprint Retrospective:**
+    * lorem ipsum.
+
   
 </details>
 
