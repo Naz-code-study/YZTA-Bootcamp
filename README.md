@@ -73,7 +73,7 @@ MoodTaste AI (Zevk DNA)
   
   * **Backlog düzeni ve Story seçimleri:** Bu sprint, projenin aktif geliştirme evresi olarak kurgulanmış; temel arayüzlerin (UI/UX) kodlanması, veri setlerinin bulunması ve backend mimarisinin temellerinin atılması story'lerine odaklanmıştır. Product Backlog'umuzdan efor yüksekliği göz önüne alınarak frontend ekranları ve Kaggle veri seti hazırlıkları önceliklendirilmiştir. Sprint başına tahmin edilen puan kapasitesi aşılmadan, görevler (task'ler) dengeli bir şekilde dağıtılmış ve teknik altyapı işlerine ağırlık verilmiştir.
 
-  * **Daily Scrum:** Daily Scrum toplantılarımızın ve genel proje süreçlerimizin WhatsApp üzerinden düzenli iletişim kurularak ve Google Meet üzerinden online toplantılar yapılarak yürütülmesine karar verilmiştir. Daily Scrum toplantısı örneği ekran görüntüsü olarak Readme'de tarafımızdan paylaşılmaktadır: 
+  * **Daily Scrum:** Daily Scrum toplantılarımızın ve genel proje süreçlerimizin WhatsApp üzerinden düzenli iletişim kurularak ve Google Meet üzerinden online toplantılar yapılarak yürütülmesine karar verilmiştir: 
     [Sprint 2 Daily Scrum Sohbet Kanıtları](https://docs.google.com/document/d/1gmG1KjJijPBOwsU2HHUjajL9HbkTeJw1/edit?usp=sharing&ouid=103046258349654356650&rtpof=true&sd=true)
 
   * **Sprint board update:** Sprint board screenshotları:
