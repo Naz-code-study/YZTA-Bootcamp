@@ -81,6 +81,13 @@ MoodTaste AI (Zevk DNA)
     ![Sprint 2 Board Görüntüsü 2] <img width="1091" height="919" alt="Ekran görüntüsü 2026-07-19 200045" src="https://github.com/user-attachments/assets/35c0d8a3-d9e6-40c3-83fc-333069952a40" />
 
   * **Ürün Durumu:** Bu sprintte frontend geliştirme süreci başarıyla tamamlanmış; React Native kullanılarak mobil uygulamanın giriş/kayıt, onboarding (zevk testi) ve ana sayfa arayüzleri çalışan kod tabanına dönüştürülmüştür. Aynı zamanda Kaggle üzerinden film, dizi ve müzik veri setleri indirilerek Keşifçi Veri Analizi (EDA) adımlarına başlanmış, Python (FastAPI/Flask) backend ortamının kurulumları yapılmıştır.
+<img width="400" height="867" alt="WhatsApp Image 2026kjnknkn34 48" src="https://github.com/user-attachments/assets/37b88d51-5d7f-4e84-bede-20b033773bd1" />
+
+<img width="400" height="867" alt="WhatsApp Image 2026-07-19 at 19 34 48" src="https://github.com/user-attachments/assets/bc605de9-97d0-4213-a7cb-e4b20782ddd3" />
+
+<img width="400" height="867" alt="jhbuygı 34 48" src="https://github.com/user-attachments/assets/055e1bee-7a30-467f-a5de-77bc54a3d4eb" />
+
+<img width="400" height="867" alt="WhatsAöknlkjnçöknlkı7-19 at 19 34 48" src="https://github.com/user-attachments/assets/5b52150a-3134-4844-9ac0-f3e4860aabe6" />
 
   * **Sprint Review:** 
     * **Alınan Kararlar:** Mobil uygulamanın arayüz kodlamasında tasarım tutarlılığı sağlandığı görülmüş ve frontend tarafının MVP (İlk Çalışan Sürüm) için yeterli olduğuna karar verilmiştir.
