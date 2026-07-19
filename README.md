@@ -71,27 +71,29 @@ MoodTaste AI (Zevk DNA)
 <details>
   <summary><h2>Sprint 2</h2></summary>
   
-  * **Backlog düzeni ve Story seçimleri:** lorem ipsum
+  * **Backlog düzeni ve Story seçimleri:** Bu sprint, projenin aktif geliştirme evresi olarak kurgulanmış; temel arayüzlerin (UI/UX) kodlanması, veri setlerinin bulunması ve backend mimarisinin temellerinin atılması story'lerine odaklanmıştır. Product Backlog'umuzdan efor yüksekliği göz önüne alınarak frontend ekranları ve Kaggle veri seti hazırlıkları önceliklendirilmiştir. Sprint başına tahmin edilen puan kapasitesi aşılmadan, görevler (task'ler) dengeli bir şekilde dağıtılmış ve teknik altyapı işlerine ağırlık verilmiştir.
 
   * **Daily Scrum:** Daily Scrum toplantılarımızın ve genel proje süreçlerimizin WhatsApp üzerinden düzenli iletişim kurularak ve Google Meet üzerinden online toplantılar yapılarak yürütülmesine karar verilmiştir. Daily Scrum toplantısı örneği ekran görüntüsü olarak Readme'de tarafımızdan paylaşılmaktadır: 
     [Sprint 2 Daily Scrum Sohbet Kanıtları]()
 
   * **Sprint board update:** Sprint board screenshotları:
-    ![Sprint 2 Board Görüntüsü 1] 
-    ![Sprint 2 Board Görüntüsü 2] 
+    ![Sprint 2 Board Görüntüsü 1] <img width="1462" height="871" alt="Ekran görüntüsü 2026-07-19 195823" src="https://github.com/user-attachments/assets/bec4c795-66e4-46f2-b3bd-00c2dcc3315c" />
+    ![Sprint 2 Board Görüntüsü 2] <img width="1091" height="919" alt="Ekran görüntüsü 2026-07-19 200045" src="https://github.com/user-attachments/assets/35c0d8a3-d9e6-40c3-83fc-333069952a40" />
 
-  * **Ürün Durumu:** lorem ipsum.
+  * **Ürün Durumu:** Bu sprintte frontend geliştirme süreci başarıyla tamamlanmış; React Native kullanılarak mobil uygulamanın giriş/kayıt, onboarding (zevk testi) ve ana sayfa arayüzleri çalışan kod tabanına dönüştürülmüştür. Aynı zamanda Kaggle üzerinden film, dizi ve müzik veri setleri indirilerek Keşifçi Veri Analizi (EDA) adımlarına başlanmış, Python (FastAPI/Flask) backend ortamının kurulumları yapılmıştır.
 
   * **Sprint Review:** 
-    * **Alınan Kararlar:** lorem ipsum 
+    * **Alınan Kararlar:** Mobil uygulamanın arayüz kodlamasında tasarım tutarlılığı sağlandığı görülmüş ve frontend tarafının MVP (İlk Çalışan Sürüm) için yeterli olduğuna karar verilmiştir.
+    * Veri seti büyüklüğünün performansı etkilememesi adına model eğitiminde ve benzerlik aramalarında vektör tabanlı yaklaşım (embedding) kullanılması kesinleşmiştir.
+    * Firebase Authentication ve Firestore veritabanı şemalarının Python backend API servisleriyle entegrasyonu bir sonraki sprintin (Sprint 3) ana odağı olarak belirlenmiştir. 
     * Sprint Review Katılımcıları: Dilay Bayrak, Vedat Ayaz, Naz Erdoğdu, Ayşe Feyza Kadersiz, Yahya Mert İmal
 
   * **Sprint Retrospective:**
-    * lorem ipsum.
+    * Frontend arayüz kodlamalarının planlanan sürede başarıyla bitirilmesi takımın motivasyonunu artırmış, geliştirme temposunun korunmasına karar verilmiştir.
+    * Veri seti temizliği ve backend API uçlarının (endpoint) bağlanması aşamasında daha yoğun bir teknik koordinasyon gerekeceği için, sonraki sprintte geliştiriciler arası ikili programlama (pair programming) yapılması kararlaştırılmıştır.
+    * Sprint sonlarında yapılan genel testlere ek olarak, kod entegrasyonu sırasında ara kontrollerin artırılması gerektiğine dikkat çekilmiştir.
 
-  
 </details>
-
 ---
 
 <details>
