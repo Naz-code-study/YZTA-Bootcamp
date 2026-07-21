@@ -179,7 +179,73 @@ export const getSavedRecommendations = (categoryFilter = 'all') => {
   return saved.filter((item) => item.category === categoryFilter);
 };
 
-// --- Zevk DNA Ekranı için Veriler ---
+// --- AI Analiz Animasyonu için Basit Eşleştirme Motoru ---
+// Gerçek bir NLP servisi bağlanana kadar, kullanıcının yazdığı/seçtiği duygu
+// metnini anahtar kelimelerle etiketlere eşleyip en uygun içerikleri skorlar.
+
+const KEYWORD_TAG_MAP = [
+  {
+    keywords: ['yorgun', 'yoruldum', 'dinlenmek', 'bitkin'],
+    tags: ['Hafif Tempo', 'Rahatlatıcı', 'Sıcak Atmosfer', 'Pratik'],
+  },
+  {
+    keywords: ['gizem', 'gizemli', 'merak', 'sürükleyici'],
+    tags: ['Gizemli', 'Distopik', 'Karanlık Atmosfer'],
+  },
+  {
+    keywords: ['kafamı dağıt', 'dağıtmak', 'eğlen', 'komik', 'mizah'],
+    tags: ['Kara Mizah', 'Hafif Tempo', 'Görsel Şölen'],
+  },
+  {
+    keywords: ['ye', 'yemek', 'aç', 'doyur', 'lezzet'],
+    categories: ['yemek'],
+  },
+  {
+    keywords: ['motive', 'motivasyon', 'ilham', 'umut'],
+    tags: ['Motive Edici', 'İlham Verici'],
+  },
+  {
+    keywords: ['rahatla', 'sakin', 'huzur', 'stresli', 'stres'],
+    tags: ['Rahatlatıcı', 'Sıcak Atmosfer', 'Hafif Tempo'],
+  },
+  {
+    keywords: ['mutlu', 'neşeli', 'keyifli'],
+    tags: ['Görsel Şölen', 'Sıcak Atmosfer', 'Duygusal'],
+  },
+];
+
+export const getMoodBasedRecommendations = (moodQuery = '', limit = 2) => {
+  const query = moodQuery.toLowerCase();
+
+  let matchedTags = [];
+  let matchedCategories = [];
+
+  KEYWORD_TAG_MAP.forEach((entry) => {
+    const hit = entry.keywords.some((kw) => query.includes(kw));
+    if (hit) {
+      if (entry.tags) matchedTags = [...matchedTags, ...entry.tags];
+      if (entry.categories) matchedCategories = [...matchedCategories, ...entry.categories];
+    }
+  });
+
+  let pool = RECOMMENDATIONS;
+  if (matchedCategories.length > 0) {
+    pool = pool.filter((item) => matchedCategories.includes(item.category));
+  }
+
+  const scored = pool.map((item) => {
+    const tagHits = item.tags.filter((tag) => matchedTags.includes(tag)).length;
+    return { item, score: tagHits * 10 + item.matchPercentage };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  const results = scored.slice(0, limit).map((entry) => entry.item);
+  if (results.length > 0) return results;
+
+  // Eşleşme bulunamazsa en yüksek uyum skorlu içerikleri döndür
+  return [...RECOMMENDATIONS].sort((a, b) => b.matchPercentage - a.matchPercentage).slice(0, limit);
+};
 
 // Baskın profil özeti (üst kart)
 export const DOMINANT_PROFILE = {
@@ -223,3 +289,139 @@ export const EXPLORE_THEMES = [
   'Bilim Kurgu Podcastleri',
   'Deneysel Caz',
 ];
+
+// --- Onboarding (Başlangıç Zevk Testi) Verileri ---
+
+export const ONBOARDING_CONTENT_TYPES = [
+  { id: 'film', label: 'Film', icon: 'film-outline' },
+  { id: 'dizi', label: 'Dizi', icon: 'tv-outline' },
+  { id: 'kitap', label: 'Kitap', icon: 'book-outline' },
+  { id: 'muzik', label: 'Müzik', icon: 'musical-notes-outline' },
+  { id: 'oyun', label: 'Oyun', icon: 'game-controller-outline' },
+  { id: 'podcast', label: 'Podcast', icon: 'mic-outline' },
+  { id: 'yemek', label: 'Yemek', icon: 'restaurant-outline' },
+];
+
+export const ONBOARDING_ATMOSPHERES = [
+  { id: 'karanlik', label: 'Karanlık & Gizemli', icon: 'moon-outline' },
+  { id: 'eglenceli', label: 'Eğlenceli & Çerezlik', icon: 'happy-outline' },
+  { id: 'dusundurucu', label: 'Düşündürücü & Felsefi', icon: 'bulb-outline' },
+  { id: 'pratik', label: 'Pratik & Konforlu', icon: 'home-outline' },
+  { id: 'romantik', label: 'Romantik & Sıcak', icon: 'heart-outline' },
+  { id: 'enerjik', label: 'Enerjik & Aksiyon Dolu', icon: 'flash-outline' },
+];
+
+export const ONBOARDING_NEEDS = [
+  { id: 'kafa_dagit', label: 'Kafamı Dağıtmaya', icon: 'game-controller-outline' },
+  { id: 'ilham', label: 'İlham Almaya', icon: 'bulb-outline' },
+  { id: 'lezzet', label: 'Yeni Lezzetler Denemeye', icon: 'restaurant-outline' },
+  { id: 'rahatlama', label: 'Rahatlamaya', icon: 'leaf-outline' },
+  { id: 'heyecan', label: 'Heyecana', icon: 'flash-outline' },
+  { id: 'baglanti', label: 'Duygusal Bağ Kurmaya', icon: 'heart-outline' },
+];
+
+// Onboarding akışının 3 adımını tanımlayan merkezi yapı
+export const ONBOARDING_STEPS = [
+  {
+    id: 'step1',
+    title: 'Hangi İçerik Türleri İlgini Çeker?',
+    subtitle: 'Birden fazla seçim yapabilirsin',
+    options: ONBOARDING_CONTENT_TYPES,
+    multiSelect: true,
+  },
+  {
+    id: 'step2',
+    title: 'Nasıl Bir Atmosfer Ararsın?',
+    subtitle: 'Sana en çok hitap edeni seç',
+    options: ONBOARDING_ATMOSPHERES,
+    multiSelect: false,
+  },
+  {
+    id: 'step3',
+    title: 'Bugünlerde En Çok Neye İhtiyacın Var?',
+    subtitle: 'Şu anki ruh haline en yakın olanı seç',
+    options: ONBOARDING_NEEDS,
+    multiSelect: false,
+  },
+];
+
+// --- AI Analiz Animasyonu için Ruh Hali -> Öneri Eşlemesi ---
+
+// Hızlı duygu çipi id'lerine göre önceden hazırlanmış öneri eşlemesi
+export const MOOD_RECOMMENDATION_MAP = {
+  m1: ['rec-003', 'rec-010'], // Mutlu -> Klaus, The Witcher
+  m2: ['rec-008', 'rec-003'], // Yorgun -> Hızlı Menemen, Klaus
+  m3: ['rec-001', 'rec-005'], // Gizemli Bir Şeyler -> Dark, Suç ve Ceza
+  m4: ['rec-009', 'rec-002'], // Kafamı Dağıt -> Inception, Peaky Blinders
+  m5: ['rec-007', 'rec-008'], // Bugün Ne Yesem? -> Ev Yapımı Mantı, Hızlı Menemen
+  m6: ['rec-004', 'rec-006'], // Motive Ol -> Kelebeğin Rüyası, Simyacı
+  m7: ['rec-006', 'rec-008'], // Rahatlamak İstiyorum -> Simyacı, Hızlı Menemen
+};
+
+// Serbest metin girişleri için basit anahtar kelime eşleme tablosu (mock NLP)
+const FREE_TEXT_KEYWORD_MAP = [
+  { keywords: ['yorgun', 'yorucu', 'bitkin', 'bitkinim'], ids: ['rec-008', 'rec-003'] },
+  { keywords: ['gizem', 'gizemli', 'sürükleyici', 'meraklı'], ids: ['rec-001', 'rec-005'] },
+  { keywords: ['motivasyon', 'ilham', 'motive'], ids: ['rec-004', 'rec-006'] },
+  { keywords: ['yemek', 'aç', 'acık', 'ye'], ids: ['rec-007', 'rec-008'] },
+  { keywords: ['rahat', 'sakin', 'huzur'], ids: ['rec-006', 'rec-008'] },
+  { keywords: ['eğlen', 'komik', 'kafa dağıt', 'mutlu'], ids: ['rec-009', 'rec-002'] },
+  { keywords: ['korku', 'gerilim', 'karanlık'], ids: ['rec-001', 'rec-010'] },
+];
+
+// Verilen bir duygu çipi id'sine veya serbest metne göre 2 adet öneri döndürür (mock AI motoru)
+export const getAIRecommendationsForMood = (moodKey, freeText = '') => {
+  if (moodKey && MOOD_RECOMMENDATION_MAP[moodKey]) {
+    const ids = MOOD_RECOMMENDATION_MAP[moodKey];
+    return RECOMMENDATIONS.filter((item) => ids.includes(item.id));
+  }
+
+  const normalizedText = (freeText || '').toLocaleLowerCase('tr-TR');
+  for (const entry of FREE_TEXT_KEYWORD_MAP) {
+    if (entry.keywords.some((keyword) => normalizedText.includes(keyword))) {
+      return RECOMMENDATIONS.filter((item) => entry.ids.includes(item.id));
+    }
+  }
+
+  // Eşleşme bulunamazsa en yüksek uyum skorlu 2 içeriği döndür
+  return [...RECOMMENDATIONS]
+    .sort((a, b) => b.matchPercentage - a.matchPercentage)
+    .slice(0, 2);
+};
+
+// --- Keşfet (ExploreScreen) Ekranı için Filtreler ---
+
+// Her filtre, RECOMMENDATIONS içindeki `tags` alanıyla eşleşecek bir veya birkaç etiket taşır.
+export const EXPLORE_FILTERS = [
+  { id: 'all', label: 'Tümü', icon: 'apps-outline', tagMatch: null },
+  { id: 'ters-kose', label: 'Ters Köşe', icon: 'shuffle-outline', tagMatch: ['Zihin Bükücü', 'Anti-Kahraman'] },
+  { id: 'distopik', label: 'Distopik', icon: 'planet-outline', tagMatch: ['Distopik'] },
+  { id: 'yuksek-tempo', label: 'Yüksek Tempo', icon: 'flash-outline', tagMatch: ['Yüksek Tempo', 'Aksiyon'] },
+  { id: 'konfor-yemek', label: 'Konfor Yemeği', icon: 'restaurant-outline', tagMatch: ['Konfor Yemeği'] },
+  { id: 'karanlik', label: 'Karanlık Atmosfer', icon: 'moon-outline', tagMatch: ['Karanlık Atmosfer'] },
+  { id: 'ilham', label: 'İlham Verici', icon: 'bulb-outline', tagMatch: ['İlham Verici', 'Motive Edici'] },
+  { id: 'fantastik', label: 'Fantastik', icon: 'sparkles-outline', tagMatch: ['Fantastik'] },
+];
+
+// Seçilen filtreye göre içerikleri döndürür. `sourceItemId` verilirse, o içerik
+// listenin en üstüne alınır ve kendisi listeden çıkarılmaz (kullanıcı referans olarak görsün diye).
+export const getExploreRecommendations = (filterId = 'all', sourceItemId = null) => {
+  const filter = EXPLORE_FILTERS.find((f) => f.id === filterId);
+  let results = RECOMMENDATIONS;
+
+  if (filter && filter.tagMatch) {
+    results = RECOMMENDATIONS.filter((item) =>
+      item.tags?.some((tag) => filter.tagMatch.includes(tag))
+    );
+  }
+
+  if (sourceItemId) {
+    const sourceIndex = results.findIndex((item) => item.id === sourceItemId);
+    if (sourceIndex > 0) {
+      const [sourceItem] = results.splice(sourceIndex, 1);
+      results = [sourceItem, ...results];
+    }
+  }
+
+  return results;
+};

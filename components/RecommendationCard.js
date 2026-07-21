@@ -6,9 +6,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { COLORS, GRADIENTS, SPACING, RADIUS, FONTS, CATEGORY_META } from '../constants/theme';
 
 const RecommendationCard = ({ item, onSave, onRate, onFindSimilar, style }) => {
+  const router = useRouter();
   const [saved, setSaved] = useState(item?.saved ?? false);
   const [rating, setRating] = useState(item?.userRating ?? 0);
 
@@ -33,7 +35,18 @@ const RecommendationCard = ({ item, onSave, onRate, onFindSimilar, style }) => {
   };
 
   const handleFindSimilar = () => {
+    // Varsa üst bileşenin özel davranışını da çalıştır (analytics/log vb.)
     if (onFindSimilar) onFindSimilar(item);
+
+    // Kullanıcıyı bu içeriğe göre filtrelenmiş Keşfet ekranına yönlendir
+    router.push({
+      pathname: '/explore',
+      params: {
+        sourceId: item.id,
+        sourceTitle: item.title,
+        sourceCategory: item.category,
+      },
+    });
   };
 
   return (

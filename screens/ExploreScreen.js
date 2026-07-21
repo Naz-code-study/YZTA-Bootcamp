@@ -1,9 +1,11 @@
-// screens/SavedRecommendationsScreen.js
-// MoodTaste AI - Kayıtlı Önerilerim Ekranı
+// screens/ExploreScreen.js
+// MoodTaste AI - "Benzerlerini Bul" Keşif Akışı
+// RecommendationCard'daki "Benzerlerini Bul" butonundan veya alt menüdeki
+// Keşfet sekmesinden ulaşılır.
 
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
   FlatList,
@@ -15,19 +17,32 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import RecommendationCard from "../components/RecommendationCard";
-import { COLORS, FONTS, GRADIENTS, RADIUS, SPACING } from "../constants/theme";
-import { SAVED_FILTERS, getSavedRecommendations } from "../data/mockData";
+import {
+  CATEGORY_META,
+  COLORS,
+  FONTS,
+  GRADIENTS,
+  RADIUS,
+  SPACING,
+} from "../constants/theme";
+import { EXPLORE_FILTERS, getExploreRecommendations } from "../data/mockData";
 
-const SavedRecommendationsScreen = () => {
-  const router = useRouter();
+const ExploreScreen = () => {
+  const params = useLocalSearchParams();
+  const { sourceId, sourceTitle, sourceCategory } = params;
+
   const [activeFilter, setActiveFilter] = useState("all");
+  const [bannerVisible, setBannerVisible] = useState(!!sourceTitle);
 
-  const savedItems = useMemo(
-    () => getSavedRecommendations(activeFilter),
-    [activeFilter],
+  const results = useMemo(
+    () =>
+      getExploreRecommendations(activeFilter, bannerVisible ? sourceId : null),
+    [activeFilter, bannerVisible, sourceId],
   );
 
-  const activeFilterMeta = SAVED_FILTERS.find((f) => f.id === activeFilter);
+  const sourceCategoryMeta = sourceCategory
+    ? CATEGORY_META[sourceCategory]
+    : null;
 
   const handleSave = (id, isSaved) => {
     console.log(`[Mock] ${id} kaydetme durumu:`, isSaved);
@@ -37,27 +52,60 @@ const SavedRecommendationsScreen = () => {
     console.log(`[Mock] ${id} puanlandı:`, value);
   };
 
-  const handleFindSimilar = (item) => {
-    console.log("[Mock] Benzerleri aranıyor:", item.title);
-  };
-
-  const goToHome = () => {
-    router.replace("/");
-  };
+  const dismissBanner = () => setBannerVisible(false);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
       {/* Başlık */}
       <View style={styles.headerBlock}>
-        <Text style={styles.headerTitle}>Kayıtlı Önerilerim</Text>
+        <View style={styles.eyebrowRow}>
+          <Ionicons
+            name="compass-outline"
+            size={14}
+            color={COLORS.primaryLight}
+          />
+          <Text style={styles.eyebrow}>KEŞFET</Text>
+        </View>
+        <Text style={styles.headerTitle}>Yeni Keşifler</Text>
         <Text style={styles.headerSubtitle}>
-          Beğendiğin ama sırası gelmeyen keşiflerin burada seni bekliyor
+          Zevk profiline yakın ama alışkanlıklarının dışına çıkan içerikler
         </Text>
       </View>
 
-      {/* Kategori Filtre Çipleri */}
+      {/* Kaynak İçerik Banner'ı ("X'e benzer içerikler görüntüleniyor") */}
+      {bannerVisible && !!sourceTitle && (
+        <LinearGradient
+          colors={GRADIENTS.primary}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.sourceBanner}
+        >
+          <View style={styles.sourceBannerLeft}>
+            {sourceCategoryMeta && (
+              <Ionicons
+                name={sourceCategoryMeta.icon}
+                size={16}
+                color="#FFFFFF"
+              />
+            )}
+            <Text style={styles.sourceBannerText} numberOfLines={1}>
+              <Text style={styles.sourceBannerBold}>{sourceTitle}</Text>{" "}
+              içeriğine benzer öneriler
+            </Text>
+          </View>
+          <TouchableOpacity onPress={dismissBanner} hitSlop={8}>
+            <Ionicons
+              name="close-circle"
+              size={20}
+              color="rgba(255,255,255,0.85)"
+            />
+          </TouchableOpacity>
+        </LinearGradient>
+      )}
+
+      {/* Filtre Çipleri */}
       <FlatList
-        data={SAVED_FILTERS}
+        data={EXPLORE_FILTERS}
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
@@ -77,14 +125,14 @@ const SavedRecommendationsScreen = () => {
                   end={{ x: 1, y: 0 }}
                   style={styles.filterChip}
                 >
-                  <Ionicons name={item.icon} size={14} color="#FFFFFF" />
+                  <Ionicons name={item.icon} size={13} color="#FFFFFF" />
                   <Text style={styles.filterChipTextActive}>{item.label}</Text>
                 </LinearGradient>
               ) : (
                 <View style={[styles.filterChip, styles.filterChipInactive]}>
                   <Ionicons
                     name={item.icon}
-                    size={14}
+                    size={13}
                     color={COLORS.textSecondary}
                   />
                   <Text style={styles.filterChipText}>{item.label}</Text>
@@ -95,10 +143,10 @@ const SavedRecommendationsScreen = () => {
         }}
       />
 
-      {/* İçerik Listesi veya Boş Durum */}
-      {savedItems.length > 0 ? (
+      {/* Sonuç Listesi */}
+      {results.length > 0 ? (
         <FlatList
-          data={savedItems}
+          data={results}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
@@ -107,7 +155,6 @@ const SavedRecommendationsScreen = () => {
               item={item}
               onSave={handleSave}
               onRate={handleRate}
-              onFindSimilar={handleFindSimilar}
               style={styles.fullWidthCard}
             />
           )}
@@ -117,28 +164,27 @@ const SavedRecommendationsScreen = () => {
         <View style={styles.emptyState}>
           <View style={styles.emptyIconWrap}>
             <Ionicons
-              name="bookmark-outline"
-              size={38}
+              name="telescope-outline"
+              size={34}
               color={COLORS.textMuted}
             />
           </View>
-          <Text style={styles.emptyTitle}>
-            Henüz bu kategoride bir öneri kaydetmedin
-          </Text>
+          <Text style={styles.emptyTitle}>Bu filtrede henüz içerik yok</Text>
           <Text style={styles.emptySubtitle}>
-            {activeFilterMeta && activeFilterMeta.id !== "all"
-              ? `${activeFilterMeta.label} kategorisinde beğendiğin bir öneriyi kaydet, burada listelensin.`
-              : "Beğendiğin önerileri kaydet butonuna dokunarak burada biriktirebilirsin."}
+            Başka bir kategori dene, keşfedecek çok şey var.
           </Text>
-          <TouchableOpacity onPress={goToHome} activeOpacity={0.85}>
+          <TouchableOpacity
+            onPress={() => setActiveFilter("all")}
+            activeOpacity={0.85}
+          >
             <LinearGradient
               colors={GRADIENTS.primary}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.emptyButton}
             >
-              <Ionicons name="compass-outline" size={16} color="#FFFFFF" />
-              <Text style={styles.emptyButtonText}>Keşfetmeye Başla</Text>
+              <Ionicons name="apps-outline" size={16} color="#FFFFFF" />
+              <Text style={styles.emptyButtonText}>Tümünü Göster</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -157,6 +203,18 @@ const styles = StyleSheet.create({
     paddingTop: SPACING.sm,
     marginBottom: SPACING.lg,
   },
+  eyebrowRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 6,
+  },
+  eyebrow: {
+    ...FONTS.tiny,
+    color: COLORS.primaryLight,
+    letterSpacing: 1.4,
+    marginLeft: 6,
+  },
   headerTitle: {
     ...FONTS.h1,
     color: COLORS.textPrimary,
@@ -167,9 +225,36 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     lineHeight: 20,
   },
+  sourceBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: SPACING.lg,
+    borderRadius: RADIUS.lg,
+    paddingVertical: 10,
+    paddingHorizontal: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  sourceBannerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    gap: 6,
+    marginRight: SPACING.sm,
+  },
+  sourceBannerText: {
+    ...FONTS.caption,
+    color: "rgba(255,255,255,0.95)",
+    marginLeft: 6,
+    flexShrink: 1,
+  },
+  sourceBannerBold: {
+    fontWeight: "800",
+    color: "#FFFFFF",
+  },
   filtersList: {
     flexGrow: 0,
-    height: 56,
+    height: 50,
     marginBottom: SPACING.sm,
   },
   filtersRow: {
@@ -181,10 +266,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: RADIUS.pill,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
+    paddingHorizontal: 13,
+    paddingVertical: 8,
     marginRight: SPACING.sm,
-    gap: 6,
+    gap: 5,
   },
   filterChipInactive: {
     backgroundColor: COLORS.cardBackground,
@@ -192,15 +277,15 @@ const styles = StyleSheet.create({
     borderColor: COLORS.cardBorder,
   },
   filterChipText: {
-    ...FONTS.caption,
+    ...FONTS.tiny,
     color: COLORS.textSecondary,
-    marginLeft: 6,
+    marginLeft: 5,
     fontWeight: "600",
   },
   filterChipTextActive: {
-    ...FONTS.caption,
+    ...FONTS.tiny,
     color: "#FFFFFF",
-    marginLeft: 6,
+    marginLeft: 5,
     fontWeight: "700",
   },
   listContent: {
@@ -257,4 +342,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SavedRecommendationsScreen;
+export default ExploreScreen;

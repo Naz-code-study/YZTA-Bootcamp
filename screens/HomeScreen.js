@@ -1,5 +1,5 @@
 // screens/HomeScreen.js
-// MoodTaste AI - Ana Ekran
+// MoodTaste AI - Ana Ekran (AI Analiz Animasyonu entegre edilmiş hali)
 
 import React, { useState } from 'react';
 import {
@@ -16,19 +16,57 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 import RecommendationCard from '../components/RecommendationCard';
-import { MOOD_CHIPS, getFeaturedRecommendations } from '../data/mockData';
+import AIAnalyzingModal from '../components/AIAnalyzingModal';
+import AIResultModal from '../components/AIResultModal';
+import { MOOD_CHIPS, getFeaturedRecommendations, getMoodBasedRecommendations } from '../data/mockData';
 import { COLORS, GRADIENTS, SPACING, RADIUS, FONTS } from '../constants/theme';
 
 const HomeScreen = () => {
-  const [moodText, setMoodText] = useState('');
-  const [selectedChip, setSelectedChip] = useState(null);
+  const router = useRouter();
   const featured = getFeaturedRecommendations();
 
+  const [moodText, setMoodText] = useState('');
+  const [selectedChip, setSelectedChip] = useState(null);
+
+  // AI Analiz akışı state'leri
+  const [analyzing, setAnalyzing] = useState(false);
+  const [resultVisible, setResultVisible] = useState(false);
+  const [aiResults, setAiResults] = useState([]);
+  const [pendingMoodLabel, setPendingMoodLabel] = useState('');
+
+  const startAnalysis = (query) => {
+    if (!query || !query.trim()) return;
+    setPendingMoodLabel(query.trim());
+    setResultVisible(false);
+    setAiResults([]);
+    setAnalyzing(true);
+  };
+
   const handleChipPress = (chip) => {
-    setSelectedChip(chip.id === selectedChip ? null : chip.id);
+    const isSame = chip.id === selectedChip;
+    setSelectedChip(isSame ? null : chip.id);
     setMoodText(chip.label);
+    if (!isSame) {
+      startAnalysis(chip.label);
+    }
+  };
+
+  const handleSendPress = () => {
+    startAnalysis(moodText);
+  };
+
+  const handleAnalysisComplete = () => {
+    const results = getMoodBasedRecommendations(pendingMoodLabel, 2);
+    setAiResults(results);
+    setAnalyzing(false);
+    setResultVisible(true);
+  };
+
+  const handleCloseResult = () => {
+    setResultVisible(false);
   };
 
   const handleSave = (id, isSaved) => {
@@ -43,6 +81,10 @@ const HomeScreen = () => {
     console.log('[Mock] Benzerleri aranıyor:', item.title);
   };
 
+  const goToOnboarding = () => {
+    router.push('/onboarding');
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <StatusBar barStyle="light-content" />
@@ -52,8 +94,16 @@ const HomeScreen = () => {
       >
         {/* Üst Karşılama */}
         <View style={styles.headerBlock}>
-          <Text style={styles.greeting}>Merhaba 👋</Text>
-          <Text style={styles.headerTitle}>Bugün nasıl hissediyorsun?</Text>
+          <View style={styles.headerTopRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.greeting}>Merhaba 👋</Text>
+              <Text style={styles.headerTitle}>Bugün nasıl hissediyorsun?</Text>
+            </View>
+            <TouchableOpacity onPress={goToOnboarding} style={styles.retakeButton} activeOpacity={0.75}>
+              <Ionicons name="refresh-outline" size={13} color={COLORS.primaryLight} />
+              <Text style={styles.retakeButtonText}>Zevk Testini Yenile</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.headerSubtitle}>
             Ruh haline göre film, dizi, kitap ve daha fazlasını keşfet
           </Text>
@@ -70,7 +120,7 @@ const HomeScreen = () => {
             onChangeText={setMoodText}
             multiline
           />
-          <TouchableOpacity activeOpacity={0.8} style={styles.searchSendButton}>
+          <TouchableOpacity activeOpacity={0.8} style={styles.searchSendButton} onPress={handleSendPress}>
             <LinearGradient
               colors={GRADIENTS.primary}
               start={{ x: 0, y: 0 }}
@@ -144,6 +194,20 @@ const HomeScreen = () => {
 
         <View style={{ height: 110 }} />
       </ScrollView>
+
+      {/* AI Analiz Ediyor Overlay */}
+      <AIAnalyzingModal visible={analyzing} onComplete={handleAnalysisComplete} />
+
+      {/* AI Sonuç Sheet'i */}
+      <AIResultModal
+        visible={resultVisible}
+        moodLabel={pendingMoodLabel}
+        items={aiResults}
+        onClose={handleCloseResult}
+        onSave={handleSave}
+        onRate={handleRate}
+        onFindSimilar={handleFindSimilar}
+      />
     </SafeAreaView>
   );
 };
@@ -161,6 +225,12 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'android' ? SPACING.lg : SPACING.sm,
     marginBottom: SPACING.md,
   },
+  headerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
   greeting: {
     ...FONTS.body,
     color: COLORS.textMuted,
@@ -169,11 +239,28 @@ const styles = StyleSheet.create({
   headerTitle: {
     ...FONTS.h1,
     color: COLORS.textPrimary,
-    marginBottom: 6,
   },
   headerSubtitle: {
     ...FONTS.body,
     color: COLORS.textSecondary,
+    marginTop: 6,
+  },
+  retakeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(139,92,246,0.35)',
+    backgroundColor: 'rgba(139,92,246,0.08)',
+    borderRadius: RADIUS.pill,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    gap: 4,
+    marginTop: 4,
+  },
+  retakeButtonText: {
+    ...FONTS.tiny,
+    color: COLORS.primaryLight,
+    marginLeft: 4,
   },
   searchBox: {
     flexDirection: 'row',

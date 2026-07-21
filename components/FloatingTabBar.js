@@ -1,6 +1,6 @@
 // components/FloatingTabBar.js
 // MoodTaste AI - Premium Floating Bottom Navigation
-// expo-router tabanlı, cam efektli (BlurView), 3 sekmeli özel alt navigasyon.
+// expo-router tabanlı, cam efektli (BlurView), 5 sekmeli özel alt navigasyon.
 
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
@@ -9,10 +9,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, GRADIENTS, RADIUS, FONTS } from '../constants/theme';
+import { COLORS, GRADIENTS, RADIUS } from '../constants/theme';
 
 const TABS = [
   { key: 'home', path: '/', label: 'Ana Sayfa', iconActive: 'home', iconInactive: 'home-outline' },
+  {
+    key: 'explore',
+    path: '/explore',
+    label: 'Keşfet',
+    iconActive: 'compass',
+    iconInactive: 'compass-outline',
+  },
   {
     key: 'taste-dna',
     path: '/taste-dna',
@@ -27,12 +34,23 @@ const TABS = [
     iconActive: 'bookmark',
     iconInactive: 'bookmark-outline',
   },
+  {
+    key: 'profile',
+    path: '/profile',
+    label: 'Profil',
+    iconActive: 'person-circle',
+    iconInactive: 'person-circle-outline',
+  },
 ];
 
 const FloatingTabBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
+
+  // Onboarding (zevk testi) ve Auth (giriş/kayıt) tam ekran akışlar olduğu için
+  // nav barı bu rotalarda göstermiyoruz
+  if (pathname === '/onboarding' || pathname === '/auth') return null;
 
   const isActive = (tabPath) => {
     if (tabPath === '/') return pathname === '/' || pathname === '/index';
@@ -64,12 +82,12 @@ const FloatingTabBar = () => {
                     end={{ x: 1, y: 1 }}
                     style={styles.activePill}
                   >
-                    <Ionicons name={tab.iconActive} size={18} color="#FFFFFF" />
+                    <Ionicons name={tab.iconActive} size={16} color="#FFFFFF" />
                     <Text style={styles.activeLabel}>{tab.label}</Text>
                   </LinearGradient>
                 ) : (
                   <View style={styles.inactivePill}>
-                    <Ionicons name={tab.iconInactive} size={20} color={COLORS.textMuted} />
+                    <Ionicons name={tab.iconInactive} size={19} color={COLORS.textMuted} />
                   </View>
                 )}
               </TouchableOpacity>
@@ -104,9 +122,9 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.12)',
     borderRadius: RADIUS.pill,
     backgroundColor: 'rgba(21,21,33,0.55)',
-    paddingHorizontal: 6,
-    paddingVertical: 6,
-    gap: 4,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    gap: 3,
   },
   tabButton: {
     borderRadius: RADIUS.pill,
@@ -115,19 +133,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: RADIUS.pill,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    gap: 6,
+    paddingHorizontal: 13,
+    paddingVertical: 9,
+    gap: 5,
   },
   activeLabel: {
-    ...FONTS.caption,
-    color: '#FFFFFF',
+    fontSize: 11.5,
     fontWeight: '700',
-    marginLeft: 6,
+    color: '#FFFFFF',
+    marginLeft: 5,
   },
   inactivePill: {
-    width: 44,
-    height: 40,
+    width: 40,
+    height: 38,
     alignItems: 'center',
     justifyContent: 'center',
   },
