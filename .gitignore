@@ -41,3 +41,10 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Backend (Python/FastAPI)
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/.env
+backend/firebase-credentials.json
