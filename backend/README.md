@@ -44,6 +44,31 @@ as `Authorization: Bearer <token>` on every other request. The backend verifies 
 Firebase Admin SDK — it never handles or stores raw passwords itself (that's proxied to Firebase's
 Identity Toolkit REST API).
 
+## Endpoints
+
+| Endpoint | Auth | Body / Query | Notes |
+|---|---|---|---|
+| `POST /auth/register` | — | `{fullName, email, password}` | Creates the Firebase user + `users/{uid}` doc, returns an ID token |
+| `POST /auth/login` | — | `{email, password}` | Returns an ID token + `needsOnboarding` |
+| `POST /auth/social` | — | `{provider, idToken}` | Verifies a client-supplied Firebase ID token, upserts the user doc |
+| `POST /auth/logout` | — | — | No-op 200 (client just discards the token) |
+| `GET /users/me` | Bearer | — | `{name, initials, tasteHeadline}` |
+| `POST /users/me/onboarding` | Bearer | `{contentTypes[], atmosphere, need}` | Flips `needsOnboarding` to `false` |
+| `GET /users/me/settings` | Bearer | — | `{darkMode, notifications, language}` |
+| `PATCH /users/me/settings` | Bearer | any subset of the above | |
+| `GET /users/me/taste-profile` | Bearer | — | Radar data, category progress, dominant profile — derived from interactions |
+| `GET /users/me/saved` | Bearer | `?category=` (default `all`) | |
+| `DELETE /users/me/data` | Bearer | — | Wipes interactions/onboarding/taste-profile, resets `needsOnboarding` |
+| `GET /recommendations/featured` | Bearer | — | |
+| `POST /recommendations/mood` | Bearer | `{moodText?, moodChipId?, limit?}` | See mood-matching section below |
+| `GET /recommendations/explore` | Bearer | `?filter=&sourceId=` | |
+| `POST /recommendations/{id}/save` | Bearer | — | |
+| `DELETE /recommendations/{id}/save` | Bearer | — | |
+| `POST /recommendations/{id}/rating` | Bearer | `{value: 0-5}` | |
+| `GET /health` | — | — | Liveness check |
+
+Full interactive docs (request/response schemas) are at `/docs` (Swagger UI) once the server is running.
+
 ## Mood matching: keyword rules + vector similarity
 
 `POST /recommendations/mood` first checks the mood text/chip against `scoring.KEYWORD_TAG_MAP`

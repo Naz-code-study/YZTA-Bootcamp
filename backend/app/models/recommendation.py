@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class RecommendationOut(BaseModel):
@@ -21,4 +21,4 @@ class MoodRequest(BaseModel):
 
 
 class RatingRequest(BaseModel):
-    value: int
+    value: int = Field(ge=0, le=5)
