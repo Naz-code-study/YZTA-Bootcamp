@@ -86,12 +86,20 @@ def get_mood_recommendations(db, uid: str, mood_text: str | None, mood_chip_id: 
     from app.services.scoring import match_tags_and_categories, MOOD_CHIP_QUERY
 
     query = mood_text or MOOD_CHIP_QUERY.get(mood_chip_id or "", "")
-    matched_tags, _ = match_tags_and_categories(query)
+    matched_tags, matched_categories = match_tags_and_categories(query)
 
-    return [
+    results = [
         to_recommendation_out(content, interactions.get(content["id"]), pct, matched_tags)
         for content, pct in scored
     ]
+
+    if not matched_tags and not matched_categories and query:
+        # These were ranked by semantic similarity, not keyword hits — say so instead of the
+        # generic "genel zevk profiline uyum" note, which would be misleading here.
+        for rec in results:
+            rec.aiNote = f"Bu {rec.category}, '{query}' ifadenle anlamsal olarak en yüksek benzerliği taşıyor."
+
+    return results
 
 
 def get_explore(db, uid: str, filter_id: str, source_id: str | None) -> list[RecommendationOut]:

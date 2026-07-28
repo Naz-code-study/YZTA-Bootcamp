@@ -2,6 +2,8 @@
 # (mockData.js also has an unused getAIRecommendationsForMood/MOOD_RECOMMENDATION_MAP —
 # that one is dead code in the frontend and intentionally not ported here.)
 
+from app.services import vector_similarity
+
 KEYWORD_TAG_MAP = [
     {
         "keywords": ["yorgun", "yoruldum", "dinlenmek", "bitkin"],
@@ -74,20 +76,38 @@ def score_mood_request(
     query = mood_text or MOOD_CHIP_QUERY.get(mood_chip_id or "", "")
     matched_tags, matched_categories = match_tags_and_categories(query)
 
-    pool = all_content
-    if matched_categories:
-        pool = [c for c in pool if c["category"] in matched_categories]
+    if matched_tags or matched_categories:
+        # Literal keyword hit (mood chips always land here): keep the validated keyword-based
+        # ranking, with a small vector-similarity nudge only for tie-breaking within it.
+        pool = all_content
+        if matched_categories:
+            pool = [c for c in pool if c["category"] in matched_categories]
 
-    scored = [
-        (c, compute_match_percentage(c.get("tags", []), c.get("basePopularity", 0), matched_tags))
-        for c in pool
-    ]
-    scored.sort(key=lambda pair: pair[1], reverse=True)
+        semantic_scores = vector_similarity.rank_by_semantic_similarity(pool, query)
+        scored = [
+            (
+                c,
+                min(
+                    100,
+                    compute_match_percentage(c.get("tags", []), c.get("basePopularity", 0), matched_tags)
+                    + semantic_scores.get(c["id"], 0.0) * 5,
+                ),
+            )
+            for c in pool
+        ]
+        scored.sort(key=lambda pair: pair[1], reverse=True)
+        return scored[:limit]
 
-    top = scored[:limit]
-    if top:
-        return top
+    if query:
+        # Free-text mood with no literal keyword hit: real vector/similarity search (TF-IDF +
+        # cosine) over title/tags/description, instead of blindly falling back to popularity —
+        # this is what fulfils the "Vektörel Benzerlik" product feature.
+        semantic_scores = vector_similarity.rank_by_semantic_similarity(all_content, query)
+        if any(s > 0 for s in semantic_scores.values()):
+            ranked = sorted(all_content, key=lambda c: semantic_scores.get(c["id"], 0.0), reverse=True)
+            return [(c, round(semantic_scores.get(c["id"], 0.0) * 100, 1)) for c in ranked[:limit]]
+        # No shared vocabulary at all (TF-IDF is lexical, not a neural embedding) -> popularity.
 
-    # No keyword match at all -> fall back to highest basePopularity, same as the mock's fallback.
+    # No text/chip at all -> most popular overall.
     fallback = sorted(all_content, key=lambda c: c.get("basePopularity", 0), reverse=True)
     return [(c, c.get("basePopularity", 0)) for c in fallback[:limit]]

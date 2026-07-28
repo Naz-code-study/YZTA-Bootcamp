@@ -43,3 +43,17 @@ Clients call `POST /auth/register` or `POST /auth/login` to get a Firebase ID to
 as `Authorization: Bearer <token>` on every other request. The backend verifies the token via the
 Firebase Admin SDK — it never handles or stores raw passwords itself (that's proxied to Firebase's
 Identity Toolkit REST API).
+
+## Mood matching: keyword rules + vector similarity
+
+`POST /recommendations/mood` first checks the mood text/chip against `scoring.KEYWORD_TAG_MAP`
+(literal Turkish keyword → tag list, ported from the frontend mock). If that hits, ranking stays
+keyword-driven (validated behavior), with a small TF-IDF cosine-similarity nudge for tie-breaking.
+
+If the free text doesn't match any literal keyword, `services/vector_similarity.py` builds TF-IDF
+vectors over each content item's title/subtitle/description/tags and ranks by cosine similarity to
+the query — this is what the product's "Vektörel Benzerlik" feature actually refers to. It's a
+lexical vector method (no model download, `scikit-learn` only), not a neural embedding — it won't
+catch synonyms with zero shared vocabulary (e.g. "uykum geldi" vs. "Rahatlatıcı"), in which case it
+falls back to popularity ranking instead of returning a meaningless tie. Swapping in real sentence
+embeddings later is a drop-in change to that one file.

@@ -105,7 +105,15 @@ MoodTaste AI (Zevk DNA)
 
 <details>
   <summary><h2>Sprint 3</h2></summary>
-  
-  *(Sprint 3 bittiğinde detaylar buraya eklenecektir...)*
-  
+
+  * **Backlog düzeni ve Story seçimleri, Daily Scrum kanıtları, Sprint board görüntüleri, Sprint Review/Retrospective:** *(ekip tarafından doldurulacak — Jira board ve toplantı kanıtları bu depoda tutulmuyor.)*
+
+  * **Ürün Durumu:** Sprint 2'de hedeflenen "Firebase Authentication ve Firestore veritabanı şemalarının Python backend API servisleriyle entegrasyonu" bu sprintte tamamlandı. `backend/` altında FastAPI + Firebase (Auth + Firestore) servisi sıfırdan yazıldı ve gerçek Firebase projesi (`moodtaste`) üzerinde uçtan uca test edildi:
+    * Auth: kayıt/giriş/sosyal giriş, Firebase Identity Toolkit üzerinden ID token üretimi
+    * Kullanıcı: profil, onboarding, ayarlar, zevk profili (taste profile), veri sıfırlama
+    * Öneri motoru: öne çıkanlar, mood bazlı arama, keşfet filtreleri, kaydetme/puanlama
+    * Mood eşleştirme iki katmanlı: bilinen anahtar kelimeler için doğrulanmış kural tabanlı eşleştirme (frontend mock'tan birebir taşındı), bilinmeyen serbest metinler için TF-IDF + kosinüs benzerliği ile **vektörel benzerlik** araması (bkz. [backend/README.md](backend/README.md#mood-matching-keyword-rules--vector-similarity)) — "Vektörel Benzerlik" ürün özelliğinin ilk çalışan halidir
+    * İçerik kataloğu şu an `data/mockData.js`'deki 10 örnek içerikle seed ediliyor; Sprint 2'de bahsedilen Kaggle film/dizi/müzik veri setlerinin gerçek entegrasyonu ve büyük ölçekli embedding/RAG altyapısı henüz yapılmadı, sıradaki teknik borç bu.
+    * Frontend'in bu backend'e bağlanması (mock data yerine gerçek API çağrıları) ayrı bir sonraki adım olarak planlandı, henüz başlanmadı.
+
 </details>
