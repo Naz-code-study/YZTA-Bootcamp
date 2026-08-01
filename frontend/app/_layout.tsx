@@ -8,22 +8,25 @@ import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import FloatingTabBar from '../components/FloatingTabBar';
+import { AuthProvider } from '../contexts/AuthContext';
 import { COLORS } from '../constants/theme';
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <View style={styles.container}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: COLORS.background },
-            animation: 'fade',
-          }}
-        />
-        <FloatingTabBar />
-      </View>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: COLORS.background },
+              animation: 'fade',
+            }}
+          />
+          <FloatingTabBar />
+        </View>
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 }
 

@@ -2,7 +2,7 @@
 // MoodTaste AI - Kullanıcı Profili ve Ayarlar Ekranı
 
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,12 +10,16 @@ import { useRouter } from 'expo-router';
 
 import { DOMINANT_PROFILE } from '../data/mockData';
 import { COLORS, GRADIENTS, SPACING, RADIUS, FONTS } from '../constants/theme';
+import { useAuth } from '../contexts/AuthContext';
 
-const USER = {
-  name: 'Dilay',
-  handle: 'Zevk Kâşifi',
-  initials: 'D',
-};
+// Kullanıcının adından baş harfleri (avatar için) türeten yardımcı.
+// "Dilay Yılmaz" -> "DY", tek kelimelik isimde -> ilk harf, isim yoksa "?"
+function getInitials(name) {
+  if (!name || !name.trim()) return '?';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
 
 // Yeniden kullanılabilir ayar satırı bileşeni
 const SettingRow = ({ icon, iconColor, label, description, right, onPress, danger }) => {
@@ -41,11 +45,41 @@ const SettingRow = ({ icon, iconColor, label, description, right, onPress, dange
   );
 };
 
+// Platforma duyarlı onay yardımcısı: react-native-web'de Alert.alert'in çoklu
+// buton callback'i güvenilir çalışmıyor (yalnızca window.confirm'e kabaca denk
+// düşüyor). Bu yüzden web'de doğrudan window.confirm, native'de gerçek Alert
+// kullanıp ikisini de aynı Promise<boolean> arayüzüne indirgiyoruz — böylece
+// aşağıdaki kod her platformda aynı şekilde yazılabiliyor.
+function confirmAction(title, message) {
+  if (Platform.OS === 'web') {
+    return Promise.resolve(window.confirm(`${title}\n\n${message}`));
+  }
+  return new Promise((resolve) => {
+    Alert.alert(
+      title,
+      message,
+      [
+        { text: 'Vazgeç', style: 'cancel', onPress: () => resolve(false) },
+        { text: 'Onayla', style: 'destructive', onPress: () => resolve(true) },
+      ],
+      { cancelable: true, onDismiss: () => resolve(false) }
+    );
+  });
+}
+
 const ProfileScreen = () => {
   const router = useRouter();
+  const { user, logout, isLoading } = useAuth();
   const [darkMode, setDarkMode] = useState(true);
   const [notifications, setNotifications] = useState(true);
   const [language, setLanguage] = useState('tr'); // 'tr' | 'en'
+
+  // Backend'den henüz isim gelmediyse (yükleniyor veya /users/me başarısız
+  // olduysa) kullanıcıyı boş bir ekranla karşılamak yerine makul bir yer
+  // tutucu gösteriyoruz — asla eskisi gibi sabit "Dilay" yazmıyoruz.
+  const displayName = user?.name?.trim() || (isLoading ? 'Yükleniyor...' : 'Kullanıcı');
+  const initials = user?.name ? getInitials(user.name) : '?';
+  const handleLabel = user?.email || 'Zevk Kâşifi';
 
   const handleRetakeTest = () => {
     router.push('/onboarding');
@@ -55,38 +89,36 @@ const ProfileScreen = () => {
     router.push('/taste-dna');
   };
 
-  const handleResetData = () => {
-    Alert.alert(
+  const handleResetData = async () => {
+    const confirmed = await confirmAction(
       'Verileri Sıfırla',
-      'Tüm zevk profilin, puanlamaların ve kayıtlı önerilerin sıfırlanacak. Bu işlem geri alınamaz.',
-      [
-        { text: 'Vazgeç', style: 'cancel' },
-        {
-          text: 'Sıfırla',
-          style: 'destructive',
-          onPress: () => {
-            // Mock ortamda gerçek bir veri silme işlemi yok; backend bağlanınca
-            // burası ilgili API çağrısını (örn. DELETE /users/me/data) tetikleyecek.
-            console.log('[Mock] Kullanıcı verileri sıfırlandı');
-            Alert.alert('Tamamlandı', 'Verilerin sıfırlandı (mock).');
-          },
-        },
-      ]
+      'Tüm zevk profilin, puanlamaların ve kayıtlı önerilerin sıfırlanacak. Bu işlem geri alınamaz.'
     );
+    if (!confirmed) return;
+
+    // Mock ortamda gerçek bir veri silme işlemi yok; backend bağlanınca
+    // burası ilgili API çağrısını (örn. DELETE /users/me/data) tetikleyecek.
+    console.log('[Mock] Kullanıcı verileri sıfırlandı');
+    if (Platform.OS === 'web') {
+      window.alert('Verilerin sıfırlandı (mock).');
+    } else {
+      Alert.alert('Tamamlandı', 'Verilerin sıfırlandı (mock).');
+    }
   };
 
-  const handleLogout = () => {
-    Alert.alert('Hesaptan Çıkış Yap', 'Hesabından çıkış yapmak istediğine emin misin?', [
-      { text: 'Vazgeç', style: 'cancel' },
-      {
-        text: 'Çıkış Yap',
-        style: 'destructive',
-        onPress: () => {
-          console.log('[Mock] Çıkış yapıldı');
-          router.replace('/auth');
-        },
-      },
-    ]);
+  const handleLogout = async () => {
+    const confirmed = await confirmAction(
+      'Hesaptan Çıkış Yap',
+      'Hesabından çıkış yapmak istediğine emin misin?'
+    );
+    if (!confirmed) return;
+
+    // Token temizliği artık AuthContext.logout() içinde merkezi olarak yapılıyor
+    // (tokenStorage.clear() + user/token state'ini sıfırlama) — burada tekrar
+    // etmeye gerek yok, tek doğruluk kaynağı Context.
+    await logout();
+    console.log('[ProfileScreen] Çıkış yapıldı, AuthContext temizlendi');
+    router.replace('/auth');
   };
 
   return (
@@ -100,12 +132,12 @@ const ProfileScreen = () => {
             end={{ x: 1, y: 1 }}
             style={styles.avatar}
           >
-            <Text style={styles.avatarText}>{USER.initials}</Text>
+            <Text style={styles.avatarText}>{initials}</Text>
           </LinearGradient>
-          <Text style={styles.userName}>{USER.name}</Text>
+          <Text style={styles.userName}>{displayName}</Text>
           <View style={styles.userHandleRow}>
             <Ionicons name="sparkles" size={12} color={COLORS.primaryLight} />
-            <Text style={styles.userHandle}>{USER.handle}</Text>
+            <Text style={styles.userHandle}>{handleLabel}</Text>
           </View>
         </View>
 
