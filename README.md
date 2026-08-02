@@ -136,7 +136,18 @@ MoodTaste AI (Zevk DNA)
     * **Frontend & Monorepo Mimarisi:** Proje, kök dizindeki karmaşadan kurtarılarak modern bir monorepo yapısına geçirilmiştir. Tüm React Native/Expo dosyaları `frontend/` klasörüne taşınmış, `.gitignore` dosyaları birleştirilmiş, kopuk import yolları ve tema (`useThemeColor`) çakışmaları çözülmüştür. 
     * **Entegrasyon Durumu & Video Sunumu:** Bu sprint itibarıyla Backend tamamen hazır, Frontend ise görsel/navigasyon olarak sorunsuzdur. **Faz 2 olarak adlandırılan, Frontend'in gerçek API uçlarına (Onboarding verilerinin POST edilmesi vb.) bağlanması işlemi bir sonraki aşamaya bırakılmıştır.** Uygulamanın mevcut durumuyla Ürün Tanıtım/Final Video Sunumu başarıyla çekilmiştir.
 
-  * **Sprint Review:** 
+      <img width="1903" height="918" alt="Ekran görüntüsü 2026-08-02 140040" src="https://github.com/user-attachments/assets/71170ccb-d3b8-4a9d-98d5-861ffd519347" />
+      <img width="1900" height="930" alt="Ekran görüntüsü 2026-08-02 140101" src="https://github.com/user-attachments/assets/0b1e7f4e-398c-46a5-9764-8583aad164c1" />
+
+      <img width="1919" height="931" alt="Ekran görüntüsü 2026-08-02 140159" src="https://github.com/user-attachments/assets/29ee1cd7-eea5-4c15-936c-e47bb9d6debd" />
+      <img width="1919" height="912" alt="Ekran görüntüsü 2026-08-02 140220" src="https://github.com/user-attachments/assets/69ac501f-00b2-4ae4-9263-11a3fb69e544" />
+      <img width="1919" height="913" alt="Ekran görüntüsü 2026-08-02 140237" src="https://github.com/user-attachments/assets/27f0da8b-1de1-44ec-8724-793a24ca1d8c" />
+      <img width="1918" height="919" alt="Ekran görüntüsü 2026-08-02 140257" src="https://github.com/user-attachments/assets/da30ff40-ef6d-4acd-af99-7af727a7f1e0" />
+      <img width="1919" height="932" alt="Ekran görüntüsü 2026-08-02 140330" src="https://github.com/user-attachments/assets/b4c2b337-7c00-4a4e-bb5a-ffd6bb24b6bd" />
+      <img width="1919" height="751" alt="Ekran görüntüsü 2026-08-02 140354" src="https://github.com/user-attachments/assets/67a1d6dc-6fb1-434e-93e5-132443191c61" />
+
+      
+   * **Sprint Review:** 
     * **Alınan Kararlar:** Python backend mimarisinin (FastAPI) oldukça hızlı çalıştığı, Firebase token doğrulama akışının güvenli olduğu ve TF-IDF vektörel aramasının beklendiği gibi tepki verdiği görülmüştür.
     * Uygulamanın mevcut stabil hali üzerinden final sunum videosunun tamamlanması onaylanmıştır.
     * Sıradaki en kritik ve tek önceliğin (Faz 2), frontend'deki mock dataların kaldırılarak yazılan bu gerçek backend uç noktalarına (API) HTTP istekleriyle bağlanması olduğuna karar verilmiştir.
