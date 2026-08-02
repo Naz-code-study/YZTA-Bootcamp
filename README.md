@@ -112,8 +112,7 @@ MoodTaste AI (Zevk DNA)
     * Jira board üzerindeki task'ler bu teknik ihtiyaçlara göre güncellenmiş ve sprint eforu frontend temizliği ile backend inşası arasında dengeli bir şekilde paylaştırılmıştır.
 
   * **Daily Scrum:** 
-    * Toplantılarımız ve proje koordinasyonumuz WhatsApp üzerinden günlük iletişim ve Google Meet üzerinden gerçekleştirilen online toplantılar ile yürütülmüştür. 
-    * Sprint 3 Daily Scrum kanıtları:  
+    * Toplantılarımız ve proje koordinasyonumuz WhatsApp üzerinden günlük iletişim ve Google Meet üzerinden gerçekleştirilen online toplantılar ile yürütülmüştür:  
       [Sprint 3 Daily Scrum Sohbet Kanıtları](https://docs.google.com/document/d/13clL-X0ixUGClkFR3RcNmd2qKEs4Y3jK/edit?usp=sharing&ouid=103046258349654356650&rtpof=true&sd=true)
 
   * **Sprint board update:** 
