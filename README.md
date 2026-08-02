@@ -114,7 +114,7 @@ MoodTaste AI (Zevk DNA)
   * **Daily Scrum:** 
     * Toplantılarımız ve proje koordinasyonumuz WhatsApp üzerinden günlük iletişim ve Google Meet üzerinden gerçekleştirilen online toplantılar ile yürütülmüştür. 
     * Sprint 3 Daily Scrum kanıtları:  
-      [Sprint 3 Daily Scrum Sohbet Kanıtları]()
+      [Sprint 3 Daily Scrum Sohbet Kanıtları](https://docs.google.com/document/d/13clL-X0ixUGClkFR3RcNmd2qKEs4Y3jK/edit?usp=sharing&ouid=103046258349654356650&rtpof=true&sd=true)
 
   * **Sprint board update:** 
     * Sprint süresince Jira backlog yönetiminin ve task ilerlemelerinin takibi için kullanılan board ekran görüntüleri:
