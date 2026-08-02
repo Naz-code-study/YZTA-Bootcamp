@@ -118,9 +118,9 @@ MoodTaste AI (Zevk DNA)
 
   * **Sprint board update:** 
     * Sprint süresince Jira backlog yönetiminin ve task ilerlemelerinin takibi için kullanılan board ekran görüntüleri:
-      ![Sprint 3 Jira Board Görüntüsü 1]
-      ![Sprint 3 Jira Board Görüntüsü 2] 
-
+      
+      ![Sprint 3 Jira Board Görüntüsü 1]<img width="1589" height="878" alt="Ekran görüntüsü 2026-08-02 131005" src="https://github.com/user-attachments/assets/179ad214-e968-4b28-8ea6-2f026818787c" />
+      ![Sprint 3 Jira Board Görüntüsü 2] <img width="1600" height="886" alt="Ekran görüntüsü 2026-08-02 131114" src="https://github.com/user-attachments/assets/de6038d3-ff28-4bb0-88df-81280835c180" />
   * **Ürün Durumu:** 
     * **Backend & Veritabanı (FastAPI + Firestore):** `backend/` dizini altında uygulamanın temel omurgası başarıyla kurulmuştur. 
       * Firebase projesi (moodtaste) oluşturulmuş, servis hesabı anahtarları (`firebase-credentials.json`) ve `.env` yapılandırmaları güvenli bir şekilde sisteme dahil edilmiştir.
