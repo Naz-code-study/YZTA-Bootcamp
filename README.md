@@ -105,15 +105,46 @@ MoodTaste AI (Zevk DNA)
 
 <details>
   <summary><h2>Sprint 3</h2></summary>
+  
+  * **Backlog düzeni ve Story seçimleri:** 
+    * Bu sprint, projenin en kapsamlı mimari dönüşüm evresi olarak planlanmıştır. Temel hedeflerimiz; frontend klasör yapısının monorepo standartlarına taşınması, FastAPI tabanlı Python backend servislerinin sıfırdan ayağa kaldırılması, Firebase (Auth + Firestore) veritabanı altyapısının kurulması ve projenin "Ürün Tanıtım / Final Video Sunumunun" tamamlanmasıdır.
+    * Product Backlog kapsamında; backend ortamının (venv, requirements) hazırlanması, REST API uç noktalarının (endpoints) kodlanması, Firestore koleksiyonlarının yapılandırılması ve iki aşamalı öneri algoritmasının tasarlanması önceliklendirilmiştir. 
+    * Jira board üzerindeki task'ler bu teknik ihtiyaçlara göre güncellenmiş ve sprint eforu frontend temizliği ile backend inşası arasında dengeli bir şekilde paylaştırılmıştır.
 
-  * **Backlog düzeni ve Story seçimleri, Daily Scrum kanıtları, Sprint board görüntüleri, Sprint Review/Retrospective:** *(ekip tarafından doldurulacak — Jira board ve toplantı kanıtları bu depoda tutulmuyor.)*
+  * **Daily Scrum:** 
+    * Toplantılarımız ve proje koordinasyonumuz WhatsApp üzerinden günlük iletişim ve Google Meet üzerinden gerçekleştirilen online toplantılar ile yürütülmüştür. 
+    * Sprint 3 Daily Scrum kanıtları:  
+      [Sprint 3 Daily Scrum Sohbet Kanıtları]()
 
-  * **Ürün Durumu:** Sprint 2'de hedeflenen "Firebase Authentication ve Firestore veritabanı şemalarının Python backend API servisleriyle entegrasyonu" bu sprintte tamamlandı. `backend/` altında FastAPI + Firebase (Auth + Firestore) servisi sıfırdan yazıldı ve gerçek Firebase projesi (`moodtaste`) üzerinde uçtan uca test edildi:
-    * Auth: kayıt/giriş/sosyal giriş, Firebase Identity Toolkit üzerinden ID token üretimi
-    * Kullanıcı: profil, onboarding, ayarlar, zevk profili (taste profile), veri sıfırlama
-    * Öneri motoru: öne çıkanlar, mood bazlı arama, keşfet filtreleri, kaydetme/puanlama
-    * Mood eşleştirme iki katmanlı: bilinen anahtar kelimeler için doğrulanmış kural tabanlı eşleştirme (frontend mock'tan birebir taşındı), bilinmeyen serbest metinler için TF-IDF + kosinüs benzerliği ile **vektörel benzerlik** araması (bkz. [backend/README.md](backend/README.md#mood-matching-keyword-rules--vector-similarity)) — "Vektörel Benzerlik" ürün özelliğinin ilk çalışan halidir
-    * İçerik kataloğu şu an `data/mockData.js`'deki 10 örnek içerikle seed ediliyor; Sprint 2'de bahsedilen Kaggle film/dizi/müzik veri setlerinin gerçek entegrasyonu ve büyük ölçekli embedding/RAG altyapısı henüz yapılmadı, sıradaki teknik borç bu.
-    * Frontend'in bu backend'e bağlanması (mock data yerine gerçek API çağrıları) ayrı bir sonraki adım olarak planlandı, henüz başlanmadı.
+  * **Sprint board update:** 
+    * Sprint süresince Jira backlog yönetiminin ve task ilerlemelerinin takibi için kullanılan board ekran görüntüleri:
+      ![Sprint 3 Jira Board Görüntüsü 1]
+      ![Sprint 3 Jira Board Görüntüsü 2] 
+
+  * **Ürün Durumu:** 
+    * **Backend & Veritabanı (FastAPI + Firestore):** `backend/` dizini altında uygulamanın temel omurgası başarıyla kurulmuştur. 
+      * Firebase projesi (moodtaste) oluşturulmuş, servis hesabı anahtarları (`firebase-credentials.json`) ve `.env` yapılandırmaları güvenli bir şekilde sisteme dahil edilmiştir.
+      * `app.seed.seed_catalog` scripti yazılarak Firestore veritabanına başlangıç içerik kataloğu (starter recommendations) başarıyla yüklenmiştir (seed edilmiştir).
+    * **Güvenlik ve Auth Akışı:** Kimlik doğrulama süreci tamamen Firebase Identity Toolkit üzerinden yapılandırılmıştır. Backend, kullanıcıların ham şifrelerini asla tutmaz veya işlemez. İstemci `POST /auth/register` veya `/auth/login` attığında bir Firebase ID Token alır ve diğer tüm güvenli isteklere `Authorization: Bearer <token>` başlığıyla erişir. Backend bu token'ı Firebase Admin SDK ile doğrular.
+    * **Geliştirilen API Uç Noktaları (Endpoints):**
+      * *Kullanıcı/Auth:* Kayıt, giriş, sosyal giriş, çıkış ve veri sıfırlama (`DELETE /users/me/data`).
+      * *Profil Yönetimi:* Profil bilgileri (`GET /users/me`), onboarding süreci (`POST /users/me/onboarding`), ayarlar (`PATCH /users/me/settings`) ve zevk profili (`GET /users/me/taste-profile`).
+      * *Öneriler & Etkileşim:* Öne çıkanlar, keşfet filtreleri, içerik kaydetme/silme ve 0-5 arası puanlama (rating) uç noktaları tamamlanmıştır. Tüm dokümantasyon `/docs` (Swagger UI) üzerinde interaktif hale getirilmiştir.
+    * **Öneri Motoru (İki Katmanlı Mood Eşleştirme):** `POST /recommendations/mood` uç noktası iki katmanlı hibrit bir algoritma ile kodlanmıştır:
+      1. *Kural Tabanlı (Keyword Rules):* Frontend mock datasından taşınan Türkçe anahtar kelimeler ile etiketler eşleştirilir (`scoring.KEYWORD_TAG_MAP`).
+      2. *Vektörel Benzerlik (Vector Similarity):* Serbest metin girildiğinde, `scikit-learn` kullanılarak içeriklerin başlık/açıklama/etiket verileri üzerinden TF-IDF vektörleri oluşturulur ve kosinüs benzerliğine (cosine similarity) göre sıralama yapılır. Bu, ürünün "Vektörel Benzerlik" özelliğinin ilk çalışan halidir. (Şu an için kelime bazlı -lexical- çalışmakta olup, gelecekte neural embedding'e geçiş için altyapı hazırdır). Eşleşme bulunamazsa sistem popülerlik sıralamasına (popularity ranking) geri döner.
+    * **Frontend & Monorepo Mimarisi:** Proje, kök dizindeki karmaşadan kurtarılarak modern bir monorepo yapısına geçirilmiştir. Tüm React Native/Expo dosyaları `frontend/` klasörüne taşınmış, `.gitignore` dosyaları birleştirilmiş, kopuk import yolları ve tema (`useThemeColor`) çakışmaları çözülmüştür. 
+    * **Entegrasyon Durumu & Video Sunumu:** Bu sprint itibarıyla Backend tamamen hazır, Frontend ise görsel/navigasyon olarak sorunsuzdur. **Faz 2 olarak adlandırılan, Frontend'in gerçek API uçlarına (Onboarding verilerinin POST edilmesi vb.) bağlanması işlemi bir sonraki aşamaya bırakılmıştır.** Uygulamanın mevcut durumuyla Ürün Tanıtım/Final Video Sunumu başarıyla çekilmiştir.
+
+  * **Sprint Review:** 
+    * **Alınan Kararlar:** Python backend mimarisinin (FastAPI) oldukça hızlı çalıştığı, Firebase token doğrulama akışının güvenli olduğu ve TF-IDF vektörel aramasının beklendiği gibi tepki verdiği görülmüştür.
+    * Uygulamanın mevcut stabil hali üzerinden final sunum videosunun tamamlanması onaylanmıştır.
+    * Sıradaki en kritik ve tek önceliğin (Faz 2), frontend'deki mock dataların kaldırılarak yazılan bu gerçek backend uç noktalarına (API) HTTP istekleriyle bağlanması olduğuna karar verilmiştir.
+    * **Sprint Review Katılımcıları:** Dilay Bayrak, Vedat Ayaz, Naz Erdoğdu, Ayşe Feyza Kadersiz, Yahya Mert İmal
+
+  * **Sprint Retrospective:**
+    * **Olumlu Yönler:** Backend ekibinin veritabanı şemalarını ve iki katmanlı arama algoritmasını çok detaylı ve temiz bir mimariyle kurması, Frontend tarafında ise monorepo geçişinin hatasız atlatılması ekibe büyük bir özgüven kazandırmıştır. Video sunumunun aradan çıkması da zaman yönetimi açısından takımı rahatlatmıştır.
+    * **Gelişime Açık Alanlar/Aksiyonlar:** Faz 2 (API entegrasyonu) henüz başlamadığı için bir sonraki aşamada Axios/Fetch yapılandırmaları, CORS ayarları ve asenkron veri yönetimi (state management) konularında frontend ve backend ekiplerinin daha sıkı bir ikili çalışma yürütmesi kararlaştırılmıştır.
 
 </details>
+---
